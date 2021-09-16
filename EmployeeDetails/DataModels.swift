@@ -12,11 +12,11 @@ enum Gender {
 }
 
 class Employee {
-    let firstName : String
-    let lastName : String
-    let address : String
-    let dob : String
-    let gender : Gender
+    var firstName : String
+    var lastName : String
+    var address : String
+    var dob : String
+    var gender : Gender
     
     init(_ firstName : String ,_ lastName : String ,_ address : String ,_ dob : String ,_ gender : Gender) {
         self.firstName = firstName

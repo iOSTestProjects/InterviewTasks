@@ -9,14 +9,27 @@ import UIKit
 
 class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSource {
     
+    @IBOutlet weak var employeeTableView: UITableView?
     var employeesArray : [Employee] = []
+    var filteredArray : [Employee] = []
+    var isFiltered : Bool = false
     var indexNumber : Int = 0
 
     @IBAction func searchButton(_ sender: UIButton) {
         view.endEditing(true)
+        
+        for employ in employeesArray {
+            if(searchField?.text == employ.firstName || searchField?.text == employ.lastName || searchField?.text == employ.dob || searchField?.text == employ.address) {
+                filteredArray.append(Employee(employ.firstName, employ.lastName, employ.address, employ.dob, employ.gender))
+            }
+        }
+        
+        isFiltered = true
+        self.employeeTableView?.reloadData()
+        // filter the number of cells and reload table view
     }
     
-    @IBOutlet weak var searchField: UITextField!
+    @IBOutlet weak var searchField: UITextField?
     let searchButton : UIButton = {
         let button = UIButton()
         button.clipsToBounds = true
@@ -31,18 +44,19 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
         searchButton.setTitle("•••", for: .normal)
         searchButton.setTitleColor(.systemOrange, for: .normal)
         searchButton.layer.cornerRadius = 30
+        searchButton.setImage(UIImage(named: "filterImage"), for: .normal)
+        searchButton.contentMode = .center
         self.view.addSubview(searchButton)
-        searchField.borderStyle = UITextField.BorderStyle.roundedRect
+        //searchField?.borderStyle = UITextField.BorderStyle.roundedRect
         populateEmployees()
     }
     
     // MARK: Data Handling methods
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let vc = storyboard?.instantiateViewController(withIdentifier: "customViewController") as? CustomCellViewController else {
-            fatalError("Error instantiating view controller")
-        }
-        vc.updateEmployeeProfile(indexNumber: indexNumber)
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        guard let vc = storyboard?.instantiateViewController(withIdentifier: "customViewController") as? CustomCellViewController else {
+//            fatalError("Error instantiating view controller")
+//        }
+//    }
     
     func populateEmployees() {
         let employ1 = Employee("Thejas", "K", "Amruthalli, Sahakar Nagar Post, Hebbal", "August 15th 1947", .male)
@@ -66,21 +80,6 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
         employeesArray.append(employ8)
         employeesArray.append(employ9)
         employeesArray.append(employ10)
-        
-        Employees.employees.append(employ1)
-        Employees.employees.append(employ2)
-        Employees.employees.append(employ3)
-        Employees.employees.append(employ4)
-        Employees.employees.append(employ5)
-        Employees.employees.append(employ6)
-        Employees.employees.append(employ7)
-        Employees.employees.append(employ8)
-        Employees.employees.append(employ9)
-        Employees.employees.append(employ10)
-        
-        for employ in employeesArray {
-            print("Employee Name : \(employ.firstName)")
-        }
     }
     
     // MARK: Table view delegate methods
@@ -89,7 +88,7 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return employeesArray.count
+        return isFiltered ? filteredArray.count : employeesArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -100,15 +99,29 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
         let index = indexPath.row
         
         if(index >= 0 && index < 10) {
-            cell.cellFN?.text = employeesArray[index].firstName
-            cell.cellLN?.text = employeesArray[index].lastName
-            cell.cellDob?.text = employeesArray[index].dob
-            cell.cellAddress?.text = employeesArray[index].address
             
-            if(employeesArray[index].gender == Gender.male) {
-                cell.cellGen?.text = "Male"
+            if(isFiltered == true) {
+                cell.cellFN?.text = filteredArray[index].firstName
+                cell.cellLN?.text = filteredArray[index].lastName
+                cell.cellDob?.text = filteredArray[index].dob
+                cell.cellAddress?.text = filteredArray[index].address
+                
+                if(filteredArray[index].gender == Gender.male) {
+                    cell.cellGen?.text = "Male"
+                } else {
+                    cell.cellGen?.text = "Female"
+                }
             } else {
-                cell.cellGen?.text = "Female"
+                cell.cellFN?.text = employeesArray[index].firstName
+                cell.cellLN?.text = employeesArray[index].lastName
+                cell.cellDob?.text = employeesArray[index].dob
+                cell.cellAddress?.text = employeesArray[index].address
+                
+                if(employeesArray[index].gender == Gender.male) {
+                    cell.cellGen?.text = "Male"
+                } else {
+                    cell.cellGen?.text = "Female"
+                }
             }
         }
         
@@ -118,28 +131,17 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         view.endEditing(true)
         
-        if(indexPath.row == 0) {
-            print("1st cell tapped")
-            
-        } else if(indexPath.row == 1) {
-            print("2nd cell tapped")
-        } else if(indexPath.row == 2) {
-            print("3rd cell tapped")
-        } else if(indexPath.row == 3) {
-            print("4th cell tapped")
-        } else if(indexPath.row == 4) {
-            print("5th cell tapped")
-        } else if(indexPath.row == 5) {
-            print("6th cell tapped")
-        } else if(indexPath.row == 6) {
-            print("7th cell tapped")
-        } else if(indexPath.row == 7) {
-            print("8th cell tapped")
-        } else if(indexPath.row == 8) {
-            print("9th cell tapped")
-        } else if(indexPath.row == 9) {
-            print("10th cell tapped")
+        guard let detailVC = storyboard?.instantiateViewController(withIdentifier: "customViewController") as? DetailViewController else {
+            fatalError("Error loading detail view")
         }
+        
+        if(isFiltered == true) {
+            detailVC.employ = Employee(filteredArray[indexPath.row].firstName, filteredArray[indexPath.row].lastName, filteredArray[indexPath.row].address, filteredArray[indexPath.row].dob, filteredArray[indexPath.row].gender)
+        } else {
+            detailVC.employ = Employee(employeesArray[indexPath.row].firstName, employeesArray[indexPath.row].lastName, employeesArray[indexPath.row].address, employeesArray[indexPath.row].dob, employeesArray[indexPath.row].gender)
+        }
+        
+        navigationController?.pushViewController(detailVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

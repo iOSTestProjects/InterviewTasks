@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Search by" textAlignment="natural" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="D6f-H6-tV0">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search by" textAlignment="natural" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="D6f-H6-tV0">
                                 <rect key="frame" x="20" y="113" width="274" height="50"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -113,7 +113,6 @@
                                             <outlet property="cellFN" destination="Xiw-aV-Uxl" id="5rP-HP-71p"/>
                                             <outlet property="cellGen" destination="P2Y-Ja-9f9" id="mFj-h2-75t"/>
                                             <outlet property="cellLN" destination="pxw-1U-hpP" id="2V0-lL-0Zk"/>
-                                            <segue destination="08Z-hX-gVv" kind="show" identifier="cellSegueID" id="phY-0z-lGZ"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -142,6 +141,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="bvL-kf-mXb"/>
                     <connections>
+                        <outlet property="employeeTableView" destination="drp-9D-Vll" id="ifV-J9-cr6"/>
                         <outlet property="searchField" destination="D6f-H6-tV0" id="Rb5-47-HEI"/>
                     </connections>
                 </viewController>
@@ -149,23 +149,23 @@
             </objects>
             <point key="canvasLocation" x="886.95652173913049" y="76.339285714285708"/>
         </scene>
-        <!--Custom Cell View Controller-->
+        <!--Detail View Controller-->
         <scene sceneID="RiD-vm-7EB">
             <objects>
-                <viewController storyboardIdentifier="customViewController" id="08Z-hX-gVv" customClass="CustomCellViewController" customModule="EmployeeDetails" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="customViewController" modalPresentationStyle="fullScreen" id="08Z-hX-gVv" customClass="DetailViewController" customModule="EmployeeDetails" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4pv-Kc-9rd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="q3V-na-kul">
-                                <rect key="frame" x="56" y="98.5" width="302" height="199"/>
+                                <rect key="frame" x="56" y="54.5" width="302" height="199"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="ExW-39-fdR"/>
                                     <constraint firstAttribute="width" constant="302" id="mhb-gJ-keK"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFZ-9a-9aW">
-                                <rect key="frame" x="56" y="490" width="151" height="34"/>
+                                <rect key="frame" x="56" y="446" width="151" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="xjd-g3-22r"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="151" id="zcr-jC-9dg"/>
@@ -175,7 +175,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Name " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ooz-Fv-FXq">
-                                <rect key="frame" x="56" y="328" width="151" height="34"/>
+                                <rect key="frame" x="56" y="284" width="151" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="Sam-Yo-rtT"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="151" id="zSS-Gc-6Wr"/>
@@ -185,7 +185,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=": name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="38P-Tw-aVG">
-                                <rect key="frame" x="207" y="328" width="151" height="34"/>
+                                <rect key="frame" x="207" y="284" width="151" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="151" id="2WP-tp-khX"/>
                                     <constraint firstAttribute="height" constant="34" id="yac-zD-zMe"/>
@@ -195,7 +195,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I3R-oN-2Rq">
-                                <rect key="frame" x="56" y="382" width="151" height="34"/>
+                                <rect key="frame" x="56" y="338" width="151" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="Q1h-hX-iFu"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="151" id="YaA-rH-HyL"/>
@@ -205,7 +205,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=": surname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Bd-6l-d1V">
-                                <rect key="frame" x="207" y="382" width="151" height="34"/>
+                                <rect key="frame" x="207" y="338" width="151" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="RPe-eI-8Qa"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="151" id="iKd-p9-Tls"/>
@@ -215,7 +215,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="D . O . B" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kEw-oZ-z4o">
-                                <rect key="frame" x="56" y="436" width="151" height="34"/>
+                                <rect key="frame" x="56" y="392" width="151" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="151" id="2sa-x6-Eln"/>
                                     <constraint firstAttribute="height" constant="34" id="9sF-Xh-swa"/>
@@ -225,17 +225,17 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=": age" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jow-w5-0IB">
-                                <rect key="frame" x="207" y="436" width="151" height="34"/>
+                                <rect key="frame" x="207" y="392" width="151" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="151" id="3TG-hI-kZr"/>
                                     <constraint firstAttribute="height" constant="34" id="6Rg-Aq-ShT"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=": gender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ct-Mg-4mq">
-                                <rect key="frame" x="207" y="490" width="151" height="34"/>
+                                <rect key="frame" x="207" y="446" width="151" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="151" id="4yh-Yl-Uxk"/>
                                     <constraint firstAttribute="height" constant="34" id="NVJ-Zr-ikr"/>
@@ -245,7 +245,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address : " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cR4-4T-AXH">
-                                <rect key="frame" x="56" y="544" width="302" height="100"/>
+                                <rect key="frame" x="56" y="500" width="302" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="302" id="CWt-l4-4XK"/>
                                     <constraint firstAttribute="height" constant="100" id="Cg6-3Q-PCq"/>
@@ -289,12 +289,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="DZ4-nk-wUH"/>
                     <connections>
-                        <outlet property="addressLabel" destination="cR4-4T-AXH" id="nli-eZ-lUq"/>
-                        <outlet property="dobLabel" destination="Jow-w5-0IB" id="Rb5-Of-TRD"/>
-                        <outlet property="firstNameLabel" destination="38P-Tw-aVG" id="bfR-vP-DXd"/>
-                        <outlet property="genderLabel" destination="4Ct-Mg-4mq" id="TjG-Oz-2Mi"/>
-                        <outlet property="lastNameLabel" destination="3Bd-6l-d1V" id="kac-8d-Mu1"/>
-                        <outlet property="profileImage" destination="q3V-na-kul" id="ezu-oM-a4B"/>
+                        <outlet property="addressLabel" destination="cR4-4T-AXH" id="xJl-0m-QdW"/>
+                        <outlet property="dobLabel" destination="Jow-w5-0IB" id="FPm-c3-ZrA"/>
+                        <outlet property="firstNameLabel" destination="38P-Tw-aVG" id="QlA-C2-f79"/>
+                        <outlet property="genderLabel" destination="4Ct-Mg-4mq" id="08v-mS-I5z"/>
+                        <outlet property="lastNameLabel" destination="3Bd-6l-d1V" id="WSk-Ok-MJZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oCg-Kf-SQj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

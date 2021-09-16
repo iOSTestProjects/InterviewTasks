@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B04252826F330EB00ADEE7E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B04252726F330EB00ADEE7E /* DetailViewController.swift */; };
 		6B96D45B26F1F73E0005223A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B96D45A26F1F73E0005223A /* AppDelegate.swift */; };
 		6B96D45D26F1F73E0005223A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B96D45C26F1F73E0005223A /* SceneDelegate.swift */; };
 		6B96D45F26F1F73E0005223A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B96D45E26F1F73E0005223A /* ViewController.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6B04252726F330EB00ADEE7E /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		6B96D45726F1F73E0005223A /* EmployeeDetails.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EmployeeDetails.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B96D45A26F1F73E0005223A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6B96D45C26F1F73E0005223A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 				6BFC82A426F268C700DCC4E9 /* DataModels.swift */,
 				6BFC82A226F225BC00DCC4E9 /* CustomCell.swift */,
 				6B96D46026F1F73E0005223A /* Main.storyboard */,
+				6B04252726F330EB00ADEE7E /* DetailViewController.swift */,
 				6B96D46626F1F7410005223A /* Assets.xcassets */,
 				6B96D46826F1F7410005223A /* LaunchScreen.storyboard */,
 				6B96D46B26F1F7410005223A /* Info.plist */,
@@ -152,6 +155,7 @@
 				6BFC82A526F268C700DCC4E9 /* DataModels.swift in Sources */,
 				6B96D46526F1F73E0005223A /* EmployeeDetails.xcdatamodeld in Sources */,
 				6B96D45D26F1F73E0005223A /* SceneDelegate.swift in Sources */,
+				6B04252826F330EB00ADEE7E /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
