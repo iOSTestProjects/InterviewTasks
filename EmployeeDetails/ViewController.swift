@@ -7,27 +7,13 @@
 
 import UIKit
 
-class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSource {
-    
+class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSource , UITextFieldDelegate {
+    // MARK: Declarations
     @IBOutlet weak var employeeTableView: UITableView?
     var employeesArray : [Employee] = []
     var filteredArray : [Employee] = []
     var isFiltered : Bool = false
     var indexNumber : Int = 0
-
-    @IBAction func searchButton(_ sender: UIButton) {
-        view.endEditing(true)
-        
-        for employ in employeesArray {
-            if(searchField?.text == employ.firstName || searchField?.text == employ.lastName || searchField?.text == employ.dob || searchField?.text == employ.address) {
-                filteredArray.append(Employee(employ.firstName, employ.lastName, employ.address, employ.dob, employ.gender))
-            }
-        }
-        
-        isFiltered = true
-        self.employeeTableView?.reloadData()
-        // filter the number of cells and reload table view
-    }
     
     @IBOutlet weak var searchField: UITextField?
     let searchButton : UIButton = {
@@ -36,34 +22,28 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
         button.backgroundColor = .systemBlue
         return button
     }()
-    
+
+    // MARK: Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         searchButton.frame = CGRect(x: self.view.bounds.width/2 + self.view.bounds.width/4, y: self.view.bounds.height/2 + self.view.bounds.height/3, width: 60, height: 60)
         searchButton.setTitle("•••", for: .normal)
         searchButton.setTitleColor(.systemOrange, for: .normal)
         searchButton.layer.cornerRadius = 30
         searchButton.setImage(UIImage(named: "filterImage"), for: .normal)
-        searchButton.contentMode = .center
+        searchButton.contentMode = .scaleToFill
         self.view.addSubview(searchButton)
-        //searchField?.borderStyle = UITextField.BorderStyle.roundedRect
         populateEmployees()
     }
     
-    // MARK: Data Handling methods
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        guard let vc = storyboard?.instantiateViewController(withIdentifier: "customViewController") as? CustomCellViewController else {
-//            fatalError("Error instantiating view controller")
-//        }
-//    }
+    // MARK: Data Handling Methods
     
     func populateEmployees() {
         let employ1 = Employee("Thejas", "K", "Amruthalli, Sahakar Nagar Post, Hebbal", "August 15th 1947", .male)
         let employ2 = Employee("Lakshmi", "K", "Vijaya Bank Layout, Bhannerughatta Road, Bangalore", "September 13th 2001", .female)
         let employ3 = Employee("Satoshi", "Nakamoto", "6th Cross, Avenue Road, Japan", "April 5th 1975", .male)
         let employ4 = Employee("Steve", "Jobs", "Silocon Valley, California", "February 24th 1955", .male)
-        let employ5 = Employee("Sindhu", "P.V", "4th Street, Jubli Hills, Hyderabad", "July 5th 1995", .female)
+        let employ5 = Employee("Sindhu", "Sitharaman", "4th Street, Jubli Hills, Hyderabad", "July 5th 1995", .female)
         let employ6 = Employee("Nirmala", "Sitharaman", "8th Street, RR Nagar, Madurai", "August 18th 1959", .female)
         let employ7 = Employee("Cristiano", "Ronaldo", "Apple Ville, Portugal", "February 5th 1985", .male)
         let employ8 = Employee("Kamala", "Harris", "Oakland, California, U.S", "October 20th 1964", .female)
@@ -82,7 +62,53 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
         employeesArray.append(employ10)
     }
     
-    // MARK: Table view delegate methods
+    @IBAction func searchButton(_ sender: UIButton) {
+        view.endEditing(true)
+        
+        self.updateTable()
+        
+        print("The number of elements in filtered array : \(filteredArray.count)")
+        
+        if(searchField?.text == "") {
+            isFiltered = false
+            self.employeeTableView?.reloadData()
+        } else {
+            isFiltered = true
+            self.employeeTableView?.reloadData()
+        }
+    }
+    
+    func updateTable() {
+        let error = "Attempt was made to add duplicate employ record to the filtered array"
+        
+        for employ in employeesArray {
+            
+            if(searchField?.text == employ.firstName || searchField?.text == employ.lastName || searchField?.text == employ.dob || searchField?.text == employ.address) {
+                if(filteredArray.count > 0) {
+                    for filterEmploy in filteredArray {
+                        if(filterEmploy.firstName != employ.firstName || filterEmploy.lastName != employ.lastName || filterEmploy.address != employ.address || filterEmploy.dob != employ.dob) {
+                            
+                            if(filterEmploy.firstName == employ.firstName || filterEmploy.lastName == employ.lastName || filterEmploy.address == employ.address || filterEmploy.dob == employ.dob) {
+                                filteredArray.append(Employee(employ.firstName, employ.lastName, employ.address, employ.dob, employ.gender))
+                                break
+                            } else {
+                                filteredArray.removeAll()
+                                filteredArray.append(Employee(employ.firstName, employ.lastName, employ.address, employ.dob, employ.gender))
+                                break
+                            }
+                        } else {
+                            print(error)
+                        }
+                    }
+                } else {
+                    //filteredArray.removeAll()
+                    filteredArray.append(Employee(employ.firstName, employ.lastName, employ.address, employ.dob, employ.gender))
+                }
+            }
+        }
+    }
+    
+    // MARK: Table View Delegate Methods
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -146,6 +172,38 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
+    }
+    
+    // MARK: UIText Field Delegate Methods
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if(textField.text == "") {
+            isFiltered = false
+            self.employeeTableView?.reloadData()
+        } else {
+            isFiltered = true
+            self.employeeTableView?.reloadData()
+        }
+    }
+
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+
+        isFiltered = false
+        self.employeeTableView?.reloadData()
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if(textField.text == "") {
+            isFiltered = false
+            self.employeeTableView?.reloadData()
+        } else {
+            self.updateTable()
+            isFiltered = true
+            self.employeeTableView?.reloadData()
+        }
+        view.endEditing(true)
+        return true
     }
     
 }
