@@ -31,5 +31,4 @@ class DetailViewController: UIViewController {
             genderLabel?.text = "Female"
         }
     }
-
 }

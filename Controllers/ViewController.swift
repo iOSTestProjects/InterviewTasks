@@ -7,33 +7,44 @@
 
 import UIKit
 
-class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSource , UITextFieldDelegate {
+class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSource , UITextFieldDelegate, UIPopoverPresentationControllerDelegate {
     // MARK: Declarations
     @IBOutlet weak var employeeTableView: UITableView?
     var employeesArray : [Employee] = []
     var filteredArray : [Employee] = []
     var isFiltered : Bool = false
-    var indexNumber : Int = 0
+    var searchAlert : Bool = false
+    var popOverController = UIAlertController()
     
     @IBOutlet weak var searchField: UITextField?
-    let searchButton : UIButton = {
+    let filterButton : UIButton = {
         let button = UIButton()
         button.clipsToBounds = true
-        button.backgroundColor = .systemBlue
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .systemGroupedBackground
         return button
     }()
 
     // MARK: Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchButton.frame = CGRect(x: self.view.bounds.width/2 + self.view.bounds.width/4, y: self.view.bounds.height/2 + self.view.bounds.height/3, width: 60, height: 60)
-        searchButton.setTitle("•••", for: .normal)
-        searchButton.setTitleColor(.systemOrange, for: .normal)
-        searchButton.layer.cornerRadius = 30
-        searchButton.setImage(UIImage(named: "filterImage"), for: .normal)
-        searchButton.contentMode = .scaleToFill
-        self.view.addSubview(searchButton)
+        filterButton.layer.cornerRadius = 35
+        filterButton.setImage(UIImage(named: "filterImage"), for: .normal)
+        filterButton.contentMode = .scaleToFill
+        filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        self.view.addSubview(filterButton)
+        
+        NSLayoutConstraint.activate([
+            filterButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height/1.2),
+            filterButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -50),
+            filterButton.widthAnchor.constraint(equalToConstant: 70),
+            filterButton.heightAnchor.constraint(equalToConstant: 70)
+        ])
         populateEmployees()
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
     }
     
     // MARK: Data Handling Methods
@@ -79,11 +90,16 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
     }
     
     func updateTable() {
-        let error = "Attempt was made to add duplicate employ record to the filtered array"
+        let warning = "Attempt was made to add duplicate employ record to the filtered array"
+        
+        // 1. Make the data model to conform to Equatable protocol and equate with one word rather than all the record details
+        // 2. It also helps in appending array elements with one word
+        // 3. Minimise the if else ladder properly by grouping conditions with && and ||
         
         for employ in employeesArray {
             
             if(searchField?.text == employ.firstName || searchField?.text == employ.lastName || searchField?.text == employ.dob || searchField?.text == employ.address) {
+                searchAlert = true
                 if(filteredArray.count > 0) {
                     for filterEmploy in filteredArray {
                         if(filterEmploy.firstName != employ.firstName || filterEmploy.lastName != employ.lastName || filterEmploy.address != employ.address || filterEmploy.dob != employ.dob) {
@@ -97,15 +113,103 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
                                 break
                             }
                         } else {
-                            print(error)
+                            print(warning)
+                            return
                         }
                     }
                 } else {
                     //filteredArray.removeAll()
                     filteredArray.append(Employee(employ.firstName, employ.lastName, employ.address, employ.dob, employ.gender))
                 }
+            } else {
+                print("Error : Invalid record details entered")
             }
         }
+        
+        if(searchAlert == false) {
+            popTheInvalidRecordAlert()
+        }
+    }
+    
+    func popTheInvalidRecordAlert() {
+        let wrongRecordAlert = UIAlertController(title: "Invalid Employee!", message: "Please enter a valid employee details. Employee not found with the above details", preferredStyle: .alert)
+        let done = UIAlertAction(title: "OK", style: .default) { _ in
+            self.searchField?.text = ""
+            self.searchField?.placeholder = "Please enter valid employ details"
+            self.isFiltered = false
+            self.employeeTableView?.reloadData()
+        }
+        
+        let emptySearchAlert = UIAlertController(title: "Empty Search!", message: "No employee details entered. Please enter any valid employ details", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Done", style: .default) { _ in
+            self.searchField?.text = ""
+            self.searchField?.placeholder = "Please enter employee detials"
+            self.isFiltered = false
+            self.employeeTableView?.reloadData()
+        }
+        
+        emptySearchAlert.addAction(ok)
+        wrongRecordAlert.addAction(done)
+        
+        if(searchField?.text == ""){
+            present(emptySearchAlert, animated: true, completion: nil)
+        } else {
+            present(wrongRecordAlert, animated: true, completion: nil)
+        }
+    }
+    
+    @objc func filterButtonTapped() {
+        
+        popOverController = UIAlertController(title: "Filter By", message: "Choose below options to filter the results", preferredStyle: .actionSheet)
+        popOverController.addAction(UIAlertAction(title: "Male", style: .default, handler: { _ in
+            self.filteredArray.removeAll()
+            for employ in self.employeesArray {
+                if(employ.gender == .male) {
+                    self.filteredArray.append(employ)
+                }
+            }
+            self.isFiltered = true
+            self.employeeTableView?.reloadData()
+        }))
+        
+        popOverController.addAction(UIAlertAction(title: "Female", style: .default, handler: { _ in
+            self.filteredArray.removeAll()
+            for employ in self.employeesArray {
+                if(employ.gender == .female) {
+                    self.filteredArray.append(employ)
+                }
+            }
+            self.isFiltered = true
+            self.employeeTableView?.reloadData()
+        }))
+        
+        popOverController.addAction(UIAlertAction(title: "Last Name", style: .default, handler: { _ in
+            
+            self.filteredArray.removeAll()
+            for employ in self.employeesArray {
+                for checker in self.employeesArray {
+                    if(employ.lastName == checker.lastName && employ.firstName != checker.firstName) {
+                        self.filteredArray.append(employ)
+                    }
+                }
+            }
+            self.isFiltered = true
+            self.employeeTableView?.reloadData()
+        }))
+        
+        popOverController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+            self.isFiltered = false
+            self.employeeTableView?.reloadData()
+        }))
+        
+        popOverController.modalPresentationStyle = .popover
+        
+        let popOver = popOverController.popoverPresentationController
+        popOver?.permittedArrowDirections = .right
+        popOver?.sourceView = self.filterButton
+        popOver?.sourceRect = self.filterButton.bounds
+        
+        present(popOverController, animated: true, completion: nil)
     }
     
     // MARK: Table View Delegate Methods
@@ -180,6 +284,7 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
             isFiltered = false
             self.employeeTableView?.reloadData()
         } else {
+            self.updateTable()
             isFiltered = true
             self.employeeTableView?.reloadData()
         }
@@ -188,6 +293,7 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
 
         isFiltered = false
+        searchAlert = false
         self.employeeTableView?.reloadData()
         return true
     }
@@ -205,5 +311,4 @@ class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSo
         view.endEditing(true)
         return true
     }
-    
 }

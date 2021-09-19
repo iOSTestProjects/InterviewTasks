@@ -45,9 +45,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B8E708826F523F6006FA049 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				6BFC82A226F225BC00DCC4E9 /* CustomCell.swift */,
+				6B96D45A26F1F73E0005223A /* AppDelegate.swift */,
+				6B96D45C26F1F73E0005223A /* SceneDelegate.swift */,
+				6B96D45E26F1F73E0005223A /* ViewController.swift */,
+				6B04252726F330EB00ADEE7E /* DetailViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		6B8E708926F52410006FA049 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6B96D46626F1F7410005223A /* Assets.xcassets */,
+				6B96D46326F1F73E0005223A /* EmployeeDetails.xcdatamodeld */,
+				6BFC82A426F268C700DCC4E9 /* DataModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		6B8E708A26F52462006FA049 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6B96D46026F1F73E0005223A /* Main.storyboard */,
+				6B96D46826F1F7410005223A /* LaunchScreen.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		6B96D44E26F1F73E0005223A = {
 			isa = PBXGroup;
 			children = (
+				6B8E708926F52410006FA049 /* Models */,
+				6B8E708A26F52462006FA049 /* Views */,
+				6B8E708826F523F6006FA049 /* Controllers */,
 				6B96D45926F1F73E0005223A /* EmployeeDetails */,
 				6B96D45826F1F73E0005223A /* Products */,
 			);
@@ -64,17 +98,7 @@
 		6B96D45926F1F73E0005223A /* EmployeeDetails */ = {
 			isa = PBXGroup;
 			children = (
-				6B96D45A26F1F73E0005223A /* AppDelegate.swift */,
-				6B96D45C26F1F73E0005223A /* SceneDelegate.swift */,
-				6B96D45E26F1F73E0005223A /* ViewController.swift */,
-				6BFC82A426F268C700DCC4E9 /* DataModels.swift */,
-				6BFC82A226F225BC00DCC4E9 /* CustomCell.swift */,
-				6B96D46026F1F73E0005223A /* Main.storyboard */,
-				6B04252726F330EB00ADEE7E /* DetailViewController.swift */,
-				6B96D46626F1F7410005223A /* Assets.xcassets */,
-				6B96D46826F1F7410005223A /* LaunchScreen.storyboard */,
 				6B96D46B26F1F7410005223A /* Info.plist */,
-				6B96D46326F1F73E0005223A /* EmployeeDetails.xcdatamodeld */,
 			);
 			path = EmployeeDetails;
 			sourceTree = "<group>";

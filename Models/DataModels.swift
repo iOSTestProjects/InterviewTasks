@@ -12,6 +12,7 @@ enum Gender {
 }
 
 class Employee {
+    
     var firstName : String
     var lastName : String
     var address : String
